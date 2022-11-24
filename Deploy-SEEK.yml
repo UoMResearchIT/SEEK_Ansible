@@ -119,7 +119,7 @@
       shell: bash -lc "{{ item }}"
       with_items:
         - wget https://www.openssl.org/source/openssl-1.1.1g.tar.gz -P '{{git_dest}}/'
-        - tar zxvf openssl-1.1.1g.tar.gz -C '{{git_dest}}/openssl-1.1.1g'
+        - tar zxvf '{{git_dest}}/openssl-1.1.1g.tar.gz' -C '{{git_dest}}/openssl-1.1.1g'
       args:
         chdir: '{{git_dest}}'
       run_once: true
