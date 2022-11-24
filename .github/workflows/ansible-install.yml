@@ -1,5 +1,5 @@
 name: ansible-install
-run-name: ${{ github.actor }} is testing Ansible install
+run-name: ${{ github.actor }} is testing Ansible install on commit ${{ github.event.head_commit.message }} identified by sha ${{ github.sha }}
 on:
   push:
   workflow_dispatch:
