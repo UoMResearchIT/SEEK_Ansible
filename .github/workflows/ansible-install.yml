@@ -8,7 +8,7 @@ jobs:
     runs-on: ${{matrix.os}}
     strategy:
       matrix:
-        os: [ubuntu-18.04,ubuntu-20.04,ubuntu-22.04,ubuntu-latest]
+        os: [ubuntu-20.04]
     steps:
 
       - name: Checkout
@@ -31,6 +31,11 @@ jobs:
 
       - name: Install SEEK through ansible
         run: ansible-playbook Deploy-SEEK.yml
+
+      - name: Runs seek unit tests
+        run: |
+          cd SEEK
+          bundle exec rails test tests/unit
 
 
   # molecule:
