@@ -8,7 +8,7 @@ jobs:
     runs-on: ${{matrix.os}}
     strategy:
       matrix:
-        os: [ubuntu-22.04]
+        os: [ubuntu-20.04]
     steps:
 
       - name: Checkout
@@ -34,8 +34,18 @@ jobs:
 
       - name: Runs seek unit tests
         run: |
-          cd SEEK
+          cd /home/runner/work/SEEK
           bundle exec rails test tests/unit
+      
+      - name: Runs seek integration tests
+        run: |
+          cd /home/runner/work/SEEK
+          bundle exec rails test tests/integration
+
+      - name: Runs seek functional tests
+        run: |
+          cd /home/runner/work/SEEK
+          bundle exec rails test tests/functional
 
 
   # molecule:
