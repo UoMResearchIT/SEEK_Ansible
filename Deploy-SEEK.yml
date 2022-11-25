@@ -289,6 +289,7 @@
         - tree '{{git_dest}}/SEEK'
         - tree '/run/'
         - tree '/var/'
+      tags: database
 
     - name: Create database user
       become: true
