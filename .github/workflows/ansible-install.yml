@@ -8,7 +8,8 @@ jobs:
     runs-on: ${{matrix.os}}
     strategy:
       matrix:
-        os: [ubuntu-18.04,ubuntu-20.04,ubuntu-22.04,ubuntu-latest]
+        #os: [ubuntu-18.04,ubuntu-20.04,ubuntu-22.04,ubuntu-latest]
+        os: [ubuntu-20.04]
 
     steps:
       - name: Checkout
@@ -28,6 +29,10 @@ jobs:
       - name: Prepares system for ansible install
         run: |
           sudo apt install acl -y
+        # These should not be necessary without --tags in ansible:
+          sudo apt install -y mysql-server python3-pymysql 
+          sudo apt install -y libmysqlclient-dev libsqlite3-dev sqlite3
 
       - name: Install SEEK through ansible
-        run: ansible-playbook Deploy-SEEK.yml
+        run: ansible-playbook Deploy-SEEK.yml --tags "git,database"
+
