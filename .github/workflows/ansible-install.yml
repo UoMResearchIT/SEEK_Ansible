@@ -32,8 +32,7 @@ jobs:
 
       - name: Creates my.conf file
         run: |
-          sudo cat /etc/my.cnf
-          sudo echo "[client]" > /etc/test.txt
+          sudo echo "hello" > /etc/test.txt
 
       - name: Install SEEK through ansible
         run: ansible-playbook Deploy-SEEK.yml
