@@ -25,6 +25,9 @@ jobs:
           sed -i 's/user_var\: username/user_var\: runner/' group_vars/vars.yml
           sed -i 's/git_dest\: \/home\/username/git_dest\: \/home\/runner\/work/' group_vars/vars.yml
           sed -i '/sql_user\: sql_username/a sql_password: mysqlpassword' group_vars/vars.yml
+          sed -i '/mysql_user\:/a\ \ \ \ \ \ \ \ \ \ login_user\:\ root' Deploy-SEEK.yml
+          sed -i '/login_user\:\ root/a\ \ \ \ \ \ \ \ \ \ login_password\:\ rootpwd' Deploy-SEEK.yml
+        
 
       - name: Prepares system for ansible install
         run: |
@@ -32,8 +35,13 @@ jobs:
           sudo apt install ansible -y
           sudo apt install acl -y
           sudo apt install mysql-server -y
+          sudo systemctl set-environment MYSQLD_OPTS="--skip-grant-tables"
           sudo /etc/init.d/mysql start
-          
+          sudo mysql -u root --execute="UPDATE mysql.user SET authentication_string = PASSWORD(rootpwd) WHERE User = 'root' AND (Host = 'localhost' OR Host = '127.0.0.1');"
+          sudo mysql -u root --execute="FLUSH PRIVILEGES"
+          sudo service mysql stop
+          sudo systemctl unset-environment MYSQLD_OPTS
+
 
 
       - name: Install SEEK through ansible
