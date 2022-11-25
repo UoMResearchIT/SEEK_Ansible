@@ -29,7 +29,10 @@ jobs:
       - name: Prepares system for ansible install
         run: |
           sudo apt install acl -y
-          sudo /etc/init.d/mysql start
+          echo "[client]" > /root/.my.cnf
+          echo "user=sql_username" >> /root/.my.cnf
+          echo "password=mysqlpassword" >> /root/.my.cnf
+          cat /root/.my.cnf
 
       - name: Install SEEK through ansible
         run: ansible-playbook Deploy-SEEK.yml
