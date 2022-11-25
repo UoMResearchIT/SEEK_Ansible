@@ -41,7 +41,8 @@ jobs:
       - name: Prepares system for ansible install
         run: |
           sudo apt install acl -y
-        # These should not be necessary without --tags in ansible:
+      - name: These should not be necessary without --tags in ansible
+        run: |
           sudo apt install -y mysql-server python3-pymysql 
           sudo apt install -y libmysqlclient-dev libsqlite3-dev sqlite3
         # sudo /etc/init.d/mysql start
