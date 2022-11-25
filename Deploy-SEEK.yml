@@ -295,33 +295,41 @@
       systemd:
         name: mysql
         state: stopped
+      tags: database
 
     - name: set environment variables
       shell: systemctl set-environment MYSQLD_OPTS="--skip-grant-tables"
+      tags: database
 
     - name: Start MySQL
       systemd:
         name: mysql
         state: started
+      tags: database
 
     - name: Reset root PW
       command: mysql -u root --execute="UPDATE mysql.user SET authentication_string = PASSWORD('{{sql_password}}') WHERE User = 'root' AND (Host = 'localhost' OR Host = '127.0.0.1');"
+      tags: database
 
     - name: Flush MySQL privileges
       command: mysql -u root --execute="FLUSH PRIVILEGES"
+      tags: database
 
     - name: Stop MySQL
       systemd:
         name: mysql
         state: stopped
+      tags: database
 
     - name: Unset environment variables
       shell: systemctl unset-environment MYSQLD_OPTS
+      tags: database
 
     - name: Start MySQL
       systemd:
         name: mysql
         state: started
+      tags: database
     ##
 
     - name: Create database user
