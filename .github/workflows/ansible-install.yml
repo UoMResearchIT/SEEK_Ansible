@@ -30,12 +30,19 @@ jobs:
         run: |
           sudo apt install acl -y
 
-      - name: Creates my.conf file
-        run: |
-          sudo echo "hello" > /etc/test.txt
+      # - name: Creates my.conf file
+      #   run: |
+      #     sudo tree /run/ -L 1 -d
+      #     sudo tree /root/ -L 1 -d
+      #     sudo tree /var/ -L 1 -d
+      #     sudo echo "[client]" > /root/test.txt
+      #     sudo echo "[client]" > /root/.my.cnf
+      #     sudo echo "user=sql_username" >> /root/.my.cnf
+      #     sudo echo "password=mysqlpassword" >> /root/.my.cnf
+      #     sudo cat /root/.my.cnf
 
       - name: Install SEEK through ansible
-        run: ansible-playbook Deploy-SEEK.yml
+        run: ansible-playbook Deploy-SEEK.yml --tags git database
 
       - name: Runs seek unit tests
         run: |
