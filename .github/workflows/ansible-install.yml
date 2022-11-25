@@ -33,7 +33,7 @@ jobs:
           sudo apt install acl -y
           sudo apt install mysql-server -y
           sudo /etc/init.d/mysql start
-          sudo mysql -u root
+          
 
 
       - name: Install SEEK through ansible

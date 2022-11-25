@@ -290,12 +290,46 @@
         replace: '{{sql_password}}'
       tags: database
 
+    #Reset MySQL root password
+    - name: Stop MySQL
+      systemd:
+        name: mysql
+        state: stopped
+
+    - name: set environment variables
+      shell: systemctl set-environment MYSQLD_OPTS="--skip-grant-tables"
+
+    - name: Start MySQL
+      systemd:
+        name: mysql
+        state: started
+
+    - name: Reset root PW
+      command: mysql -u root --execute="UPDATE mysql.user SET authentication_string = PASSWORD('{{sql_password}}') WHERE User = 'root' AND (Host = 'localhost' OR Host = '127.0.0.1');"
+
+    - name: Flush MySQL privileges
+      command: mysql -u root --execute="FLUSH PRIVILEGES"
+
+    - name: Stop MySQL
+      systemd:
+        name: mysql
+        state: stopped
+
+    - name: Unset environment variables
+      shell: systemctl unset-environment MYSQLD_OPTS
+
+    - name: Start MySQL
+      systemd:
+        name: mysql
+        state: started
+    ##
+
     - name: Create database user
       become: true
       become_user: root
       mysql_user:
         login_user: root
-        host: ''
+        login_password: '{{sql_password}}'
         name: '{{sql_user}}'
         password: '{{sql_password}}'
         priv: '*.*:ALL,GRANT'
