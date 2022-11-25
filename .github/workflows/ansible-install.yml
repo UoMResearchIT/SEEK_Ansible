@@ -11,13 +11,13 @@ jobs:
         #os: [ubuntu-18.04,ubuntu-20.04,ubuntu-22.04,ubuntu-latest]
         os: [ubuntu-20.04]
     services:
-    mysql:
-        image: mysql:8.0.21
-        env:
-            MYSQL_ALLOW_EMPTY_PASSWORD: yes
-        ports:
-          - 3306:3306
-        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+      mysql:
+          image: mysql:8.0.21
+          env:
+              MYSQL_ALLOW_EMPTY_PASSWORD: yes
+          ports:
+            - 3306:3306
+          options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
     steps:
 
       - name: Checkout
@@ -33,6 +33,8 @@ jobs:
           sed -i 's/user_var\: username/user_var\: runner/' group_vars/vars.yml
           sed -i 's/git_dest\: \/home\/username/git_dest\: \/home\/runner\/work/' group_vars/vars.yml
           sed -i '/sql_user\: sql_username/a sql_password: mysqlpassword' group_vars/vars.yml
+          sed -i '/mysql_user\:/a\ \ \ \ \ \ \ \ \ \ login_user\:\ root' Deploy-SEEK.yml
+          sed -i '/login_user\:\ root/a\ \ \ \ \ \ \ \ \ \ login_password\:\ rootpwd' Deploy-SEEK.yml
         
 
       - name: Prepares system for ansible install
