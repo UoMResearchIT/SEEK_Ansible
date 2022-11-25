@@ -33,7 +33,7 @@ jobs:
           sudo apt install acl -y
 
       - name: Install SEEK through ansible
-        run: ansible-playbook Deploy-SEEK.yml --tags "git,python,database"
+        run: ansible-playbook Deploy-SEEK.yml --tags "git,database"
 
       - name: Runs seek unit tests
         run: |
