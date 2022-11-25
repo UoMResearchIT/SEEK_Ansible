@@ -53,7 +53,11 @@
         - libyaml-dev
       tags: packages
 
-      - name: Install database packages
+    - name: Install database packages
+      become: true
+      become_user: root
+      ansible.builtin.apt:
+        pkg:
         - libmysqlclient-dev
         - mysql-server
         - libsqlite3-dev
