@@ -42,7 +42,7 @@ jobs:
       #     sudo cat /root/.my.cnf
 
       - name: Install SEEK through ansible
-        run: ansible-playbook Deploy-SEEK.yml --tags git database
+        run: ansible-playbook Deploy-SEEK.yml --tags "git,python,database"
 
       - name: Runs seek unit tests
         run: |
