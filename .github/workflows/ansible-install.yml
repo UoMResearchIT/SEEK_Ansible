@@ -29,11 +29,11 @@ jobs:
       - name: Prepares system for ansible install
         run: |
           sudo apt update
-          sudo apt install ansible
+          sudo apt install ansible -y
           sudo apt install acl -y
 
       - name: Install SEEK through ansible
-        run: ansible-playbook Deploy-SEEK.yml --tags "git,database"
+        run: ansible-playbook Deploy-SEEK.yml --tags "git,python,database"
 
       - name: Runs seek unit tests
         run: |
