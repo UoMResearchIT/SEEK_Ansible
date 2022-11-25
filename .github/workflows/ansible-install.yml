@@ -32,6 +32,10 @@ jobs:
           sudo apt install ansible -y
           sudo apt install acl -y
           sudo apt install mysql-server
+          echo "Just installed mysql-server"
+          sudo ls /run/
+          sudo /etc/init.d/mysql start
+          echo "Just started mysql"
           sudo ls /run/
 
       - name: Install SEEK through ansible
