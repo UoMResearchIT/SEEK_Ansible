@@ -30,9 +30,11 @@ jobs:
         run: |
           sudo apt install acl -y
 
-      - name: Creates my.conf file
+      - name: tree
         run: |
-          sudo echo "[client]" > /root/.my.cnf
+          pwd
+          sudo apt install tree
+          tree
 
       - name: Install SEEK through ansible
         run: ansible-playbook Deploy-SEEK.yml
