@@ -283,6 +283,13 @@
         replace: '{{sql_password}}'
       tags: database
 
+    - name:  tree
+      shell: bash -lc "{{ item }}"
+      with_items:
+        - tree '{{git_dest}}/SEEK'
+        - tree '/run/'
+        - tree '/var/'
+
     - name: Create database user
       become: true
       become_user: root
