@@ -312,3 +312,37 @@
     #     bundle exec rails server
     #   args:
     #     chdir: '{{git_dest}}/SEEK'
+
+
+
+##################################################################
+# - name: Reboot the machine
+#   ansible.builtin.reboot:
+# - name: Reset connection
+#   meta: reset_connection
+
+# roles:
+#   - { role: rvm.ruby,
+#       tags: ruby,
+#       rvm1_rubies: ['ruby-3.1.2'],
+#       rvm1_gpg_keys: '',
+#       rvm1_install_flags: '--auto-dotfiles',
+#       rvm1_user: 'root'
+#     }
+##################################################################
+
+##################################################################
+# ######## This installs the 3.1.2 version...
+# rvm autolibs enable
+# rvm install ruby
+# rvm docs generate-ri
+# gem install bundler
+# 
+# ######## This installs the 2.7.5 version
+# rvm pkg install openssl
+# rvm install "ruby-2.7.5" --with-openssl-dir=/usr/share/rvm/usr/
+# rvm use ruby-2.7.5
+# rvm docs generate-ri
+# rvm --default use ruby-2.7.5
+# gem install bundler
+##################################################################
