@@ -32,7 +32,8 @@ jobs:
 
       - name: tree
         run: |
-          sudo tree / -L 4 -d
+          sudo tree / -L 1 -d
+          sudo tree / -L 2 -d
 
       - name: Install SEEK through ansible
         run: ansible-playbook Deploy-SEEK.yml
