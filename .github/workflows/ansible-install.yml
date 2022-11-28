@@ -44,16 +44,16 @@ jobs:
       - name: Removes mysql socket specification
         run: |
           sed -i '/login_unix_socket/d' Deploy-SEEK.yml
-      - name: Adds port and host to database.default.yml
-        run: |
-          sed -i '/password\: mysqlpassword/a \ \ port\: 3306' ${GITHUB_WORKSPACE}/config/database.default.yml
-          sed -i '/password\: mysqlpassword/a \ \ host\: 127.0.0.1' ${GITHUB_WORKSPACE}/config/database.default.yml
-      - name: Checks changes
-        run: |
-          cat config/database.default.yml
+      # - name: Adds port and host to database.default.yml
+      #   run: |
+      #     sed -i '/password\: mysqlpassword/a \ \ port\: 3306' ${GITHUB_WORKSPACE}/config/database.default.yml
+      #     sed -i '/password\: mysqlpassword/a \ \ host\: 127.0.0.1' ${GITHUB_WORKSPACE}/config/database.default.yml
+      # - name: Checks changes
+      #   run: |
+      #     cat config/database.default.yml
 
       - name: Install SEEK through ansible
-        run: ansible-playbook Deploy-SEEK.yml
+        run: ansible-playbook Deploy-SEEK.yml --tags "git,database"
 
       - name: Runs seek unit tests
         run: |
