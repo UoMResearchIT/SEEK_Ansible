@@ -304,10 +304,11 @@
       shell: bash -lc "{{ item }}"
       with_items:
         - mysql -e "select user();"
-        - mysql -e "show variables where Variable_name='port';"
-        #- mysql --host 127.0.0.1 --port 3306 --user root
-        #- mysql -e "SELECT * FROM mysql.user"
+        #- mysql -e "show variables where Variable_name='port';"
       register: oli
+      tags: database
+
+    - debug: msg="{{ oli }}"
       tags: database
 
     - name: Create database user
