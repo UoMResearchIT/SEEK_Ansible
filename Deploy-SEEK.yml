@@ -283,20 +283,20 @@
         replace: '{{sql_password}}'
       tags: database
 
-    - name:  Add host and port
-      shell: bash -lc "{{ item }}"
-      with_items:
-        - sed -i '/password\: mysqlpassword/a \ \ port\: 3306' database.default.yml
-        - sed -i '/password\: mysqlpassword/a \ \ host\: 127.0.0.1' database.default.yml
-        - cat database.default.yml
-      args:
-        chdir: '{{git_dest}}/SEEK/config'
-      register: oli
-      tags: database
+    # - name:  Add host and port
+    #   shell: bash -lc "{{ item }}"
+    #   with_items:
+    #     - sed -i "/password\: mysqlpassword/a \ \ port\: 3306" database.default.yml
+    #     - sed -i "/password\: mysqlpassword/a \ \ host\: 127.0.0.1" database.default.yml
+    #     - cat database.default.yml
+    #   args:
+    #     chdir: '{{git_dest}}/SEEK/config'
+    #   register: oli
+    #   tags: database
 
-      debug: 
-        msg: oli
-      tags: database
+    #   debug: 
+    #     msg: oli
+    #   tags: database
 
     - name: Create database user
       become: true

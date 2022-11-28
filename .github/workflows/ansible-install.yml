@@ -41,6 +41,10 @@ jobs:
         run: |
           sudo apt install acl -y
 
+      - name: Start mysql
+        run: |
+          sudo systemctl start mysql.service
+
       - name: Removes mysql socket specification
         run: |
           sed -i '/login_unix_socket/d' Deploy-SEEK.yml
@@ -53,7 +57,7 @@ jobs:
       #     cat config/database.default.yml
 
       - name: Install SEEK through ansible
-        run: ansible-playbook Deploy-SEEK.yml --tags "git,database"
+        run: ansible-playbook Deploy-SEEK.yml
 
       - name: Runs seek unit tests
         run: |
