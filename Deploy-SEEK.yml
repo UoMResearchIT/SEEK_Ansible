@@ -283,10 +283,11 @@
         replace: '{{sql_password}}'
       tags: database
 
-    - name: Install filelock (Ubuntu < 20.04)
+    - name: echo
       shell: bash -lc "{{ item }}"
       with_items:
         - echo "SELECT * FROM mysql.user" | mysql -u root
+      tags: database
 
     - name: Create database user
       become: true
