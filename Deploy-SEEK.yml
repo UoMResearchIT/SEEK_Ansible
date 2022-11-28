@@ -291,7 +291,7 @@
         - systemctl status mysql
         - sudo apt install net-tools -y
         - netstat -tlnp
-        - mysql -u root -e "SELECT * FROM mysql.user"
+        #- mysql -u root -e "SELECT * FROM mysql.user"
       register: oli
       tags: database
 
