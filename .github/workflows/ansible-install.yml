@@ -46,13 +46,6 @@ jobs:
       - name: These should not be necessary without --tags in ansible
         run: |
           sudo apt install -y mysql-server python3-pymysql 
-          sudo apt install -y libmysqlclient-dev libsqlite3-dev sqlite3
-        
-        #sudo systemctl start mysql
-      
-      #- run: mysql -h 127.0.0.1 --port 3306 -u root -e 'CREATE DATABASE IF NOT EXISTS test;'
-      - run: mysql -h 127.0.0.1 --port 3306 -u root -e 'select user();'
-      - run: mysql -h 127.0.0.1 --port 3306 -u root -e 'show variables;'
 
       - name: Install SEEK through ansible
         run: ansible-playbook Deploy-SEEK.yml --tags "git,database"

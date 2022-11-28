@@ -283,34 +283,6 @@
         replace: '{{sql_password}}'
       tags: database
 
-    # - name: echo
-    #   become: true
-    #   become_user: root
-    #   shell: bash -lc "{{ item }}"
-    #   with_items:
-    #     - systemctl status mysql
-    #     - apt install net-tools -y
-    #     - netstat -tlnp
-    #     - cat /etc/passwd
-    #   register: oli
-    #   tags: database
-
-    # - debug: msg="{{ oli }}"
-    #   tags: database
-
-    # - name: echo2
-    #   become: true
-    #   become_user: root
-    #   shell: bash -lc "{{ item }}"
-    #   with_items:
-    #     - mysql -h 127.0.0.1 --port 3306 -u root -e 'select user();'
-    #     - mysql -h 127.0.0.1 --port 3306 -u root -e 'show variables;'
-    #   register: oli
-    #   tags: database
-
-    # - debug: msg="{{ oli }}"
-    #   tags: database
-
     - name: Create database user
       become: true
       become_user: root
@@ -319,7 +291,7 @@
         password: '{{sql_password}}'
         priv: '*.*:ALL,GRANT'
         state: present
-        login_unix_socket: /run/mysqld/mysqld.sock
+        # login_unix_socket: /run/mysqld/mysqld.sock
       vars:
         ansible_python_interpreter: /usr/bin/python3
       tags: database
