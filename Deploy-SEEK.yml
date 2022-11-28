@@ -295,8 +295,8 @@
     - name:  Clear block markers
       ansible.builtin.lineinfile:
         path: '{{git_dest}}/SEEK/config/database.default.yml'
-        regex: '/ANSIBLE MANAGED BLOCK/g'
-        status: absent
+        state: absent
+        regexp: '/ANSIBLE MANAGED BLOCK/g'
       tags: database
 
     - name: Check config
