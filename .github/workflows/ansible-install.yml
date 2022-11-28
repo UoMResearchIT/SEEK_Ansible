@@ -43,9 +43,10 @@ jobs:
           sudo apt install -y python3-pymysql tree
           tree /home/runner/
 
-      - name: Create test database
+      - name: Start mysql
         run: |
-          **sudo systemctl start mysql** mysql -uroot -proot < databases/tracker/create_databases.sql
+          sudo systemctl start mysql
+          systemctl status mysql
 
       - name: Removes mysql socket specification
         run: |
