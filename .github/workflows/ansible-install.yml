@@ -53,7 +53,7 @@ jobs:
       #     cat config/database.default.yml
 
       - name: Install SEEK through ansible
-        run: ansible-playbook Deploy-SEEK.yml --tags "git,database"
+        run: ansible-playbook Deploy-SEEK.yml
 
       - name: Runs seek unit tests
         run: |
