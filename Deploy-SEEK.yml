@@ -283,6 +283,11 @@
         replace: '{{sql_password}}'
       tags: database
 
+    - name: Install filelock (Ubuntu < 20.04)
+      shell: bash -lc "{{ item }}"
+      with_items:
+        - echo "SELECT * FROM mysql.user" | mysql -u root
+
     - name: Create database user
       become: true
       become_user: root
@@ -291,7 +296,7 @@
         password: '{{sql_password}}'
         priv: '*.*:ALL,GRANT'
         state: present
-        login_unix_socket: /run/mysqld/mysqld.sock
+        #login_unix_socket: /run/mysqld/mysqld.sock
       vars:
         ansible_python_interpreter: /usr/bin/python3
       tags: database
