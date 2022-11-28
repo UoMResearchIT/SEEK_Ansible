@@ -290,7 +290,7 @@
       register: oli
       tags: database
 
-    - debug: msg="{{ oli.stdout }}"
+    - debug: msg="{{ oli }}"
 
     - name: Create database user
       become: true
