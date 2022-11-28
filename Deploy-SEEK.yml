@@ -283,20 +283,20 @@
         replace: '{{sql_password}}'
       tags: database
 
-    - name: echo
-      become: true
-      become_user: root
-      shell: bash -lc "{{ item }}"
-      with_items:
-        - systemctl status mysql
-        - apt install net-tools -y
-        - netstat -tlnp
-        - cat /etc/passwd
-      register: oli
-      tags: database
+    # - name: echo
+    #   become: true
+    #   become_user: root
+    #   shell: bash -lc "{{ item }}"
+    #   with_items:
+    #     - systemctl status mysql
+    #     - apt install net-tools -y
+    #     - netstat -tlnp
+    #     - cat /etc/passwd
+    #   register: oli
+    #   tags: database
 
-    - debug: msg="{{ oli }}"
-      tags: database
+    # - debug: msg="{{ oli }}"
+    #   tags: database
 
     - name: echo2
       become: true
