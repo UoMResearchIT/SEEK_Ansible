@@ -289,10 +289,10 @@
       shell: bash -lc "{{ item }}"
       with_items:
         - systemctl status mysql
-        - sudo apt install net-tools -y
+        - apt install net-tools -y
         - netstat -tlnp
         - cat /etc/passwd
-        # - mysql -u root -e "SELECT * FROM mysql.user"
+        - mysql -e "SELECT * FROM mysql.user"
       register: oli
       tags: database
 
