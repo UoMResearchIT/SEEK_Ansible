@@ -50,9 +50,8 @@ jobs:
         
         #sudo systemctl start mysql
       
-      - run: mysql -h 127.0.0.1 -e 'select user();'
-      - run: mysql -h 127.0.0.1 -e 'show variables where Variable_name='port';'
       - run: mysql -h 127.0.0.1 --port 3306 -u root -e 'CREATE DATABASE IF NOT EXISTS test;'
+      
 
       - name: Install SEEK through ansible
         run: ansible-playbook Deploy-SEEK.yml --tags "git,database"
