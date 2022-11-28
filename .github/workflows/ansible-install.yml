@@ -40,11 +40,11 @@ jobs:
       - name: Prepares system for ansible install
         run: |
           sudo apt install acl -y
-          sudo apt install -y python3-pymysql tree
-          tree /home/runner/
 
       - name: Start mysql
         run: |
+          systemctl status mysql.service
+          journalctl -xe
           sudo /etc/init.d/mysql start
 
       - name: Removes mysql socket specification
