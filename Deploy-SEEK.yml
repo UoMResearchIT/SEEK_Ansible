@@ -317,7 +317,7 @@
         password: '{{sql_password}}'
         priv: '*.*:ALL,GRANT'
         state: present
-        login_host: 127.0.0.1
+        login_host: 172.18.0.1
         login_port: 3306
         login_unix_socket: /run/mysqld/mysqld.sock
       vars:
