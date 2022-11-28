@@ -37,7 +37,6 @@ jobs:
           sed -i 's/git_dest\: \/home\/username/git_dest\: \/home\/runner\/work/' group_vars/vars.yml
           sed -i '/sql_user\: sql_username/a sql_password: mysqlpassword' group_vars/vars.yml
 
-
       - name: Prepares system for ansible install
         run: |
           sudo apt install acl -y
@@ -46,9 +45,12 @@ jobs:
       - name: Removes mysql socket specification
         run: |
           sed -i '/login_unix_socket/d' Deploy-SEEK.yml
+          sed -i '\ \ password\:\ mysqlpassword/a \ \ port\:\ 3306' config/database.default.yml
+          sed -i '\ \ password\:\ mysqlpassword/a \ \ host\:\ 127.0.0.1' config/database.default.yml
+          cat config/database.default.yml
 
       - name: Install SEEK through ansible
-        run: ansible-playbook Deploy-SEEK.yml --tags "git,database"
+        run: ansible-playbook Deploy-SEEK.yml
 
       - name: Runs seek unit tests
         run: |
