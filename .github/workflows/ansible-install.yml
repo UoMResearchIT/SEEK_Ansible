@@ -52,7 +52,7 @@ jobs:
       
       - run: mysql -h 127.0.0.1 --port 3306 -u root -e 'CREATE DATABASE IF NOT EXISTS test;'
       - run: mysql -h 127.0.0.1 --port 3306 -u root -e 'select user();'
-      - run: mysql -h 127.0.0.1 --port 3306 -u root -e 'show variables where Variable_name='port';'
+      #- run: mysql -h 127.0.0.1 --port 3306 -u root -e 'show variables where Variable_name='port';'
 
       - name: Install SEEK through ansible
         run: ansible-playbook Deploy-SEEK.yml --tags "git,database"
