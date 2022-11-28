@@ -286,7 +286,12 @@
     - name: echo
       become: true
       become_user: root
-      shell:  mysql -u root -e "SELECT * FROM mysql.user"
+      shell: bash -lc "{{ item }}"
+      with_items:
+        - systemctl status mysql
+        - sudo apt install net-tools -y
+        - netstat -tlnp
+        - mysql -u root -e "SELECT * FROM mysql.user"
       register: oli
       tags: database
 
