@@ -45,8 +45,7 @@ jobs:
 
       - name: Start mysql
         run: |
-          sudo systemctl start mysql
-          
+          sudo /etc/init.d/mysql start
 
       - name: Removes mysql socket specification
         run: |
