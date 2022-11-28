@@ -292,6 +292,13 @@
             host: 127.0.0.1
       tags: database
       
+    - name:  Clear block markers
+      ansible.builtin.lineinfile:
+        path: '{{git_dest}}/SEEK/config/database.default.yml'
+        regex: '/ANSIBLE MANAGED BLOCK/g'
+        status: absent
+      tags: database
+
     - name: Check config
       command: cat '{{git_dest}}/SEEK/config/database.default.yml'
       register: oli
