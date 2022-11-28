@@ -283,6 +283,24 @@
         replace: '{{sql_password}}'
       tags: database
 
+    - name: Get mysql info
+      become: true
+      become_user: root
+      shell: bash -lc "{{ item }}"
+      with_items:
+        - mysql -h 127.0.0.1 --port 3306 -u root -e 'select user();'
+        - mysql -h 127.0.0.1 --port 3306 -u root -e 'select @@hostname;'
+        - mysql -h 127.0.0.1 --port 3306 -u root -e 'show variables;'
+        - mysql -h 172.18.0.1 --port 3306 -u root -e 'select user();'
+        - mysql -h 172.18.0.1 --port 3306 -u root -e 'select @@hostname;'
+        - mysql -h 172.18.0.1 --port 3306 -u root -e 'show variables;'
+      register: oli
+      ignore_errors: yes
+      tags: database
+
+    - debug: msg="{{ oli }}"
+      tags: database
+
     - name:  Add host and port
       ansible.builtin.blockinfile:
         path: '{{git_dest}}/SEEK/config/database.yml'
