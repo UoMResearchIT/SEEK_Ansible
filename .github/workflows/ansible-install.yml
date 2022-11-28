@@ -11,16 +11,16 @@ jobs:
         #os: [ubuntu-18.04,ubuntu-20.04,ubuntu-22.04,ubuntu-latest]
         os: [ubuntu-20.04]
 
-    # services:
-    #   mysql:
-    #       image: mysql:8.0.21
-    #       env:
-    #           MYSQL_ALLOW_EMPTY_PASSWORD: yes
-    #           MYSQL_ROOT_PASSWORD: ''
-    #           MYSQL_DATABASE: test
-    #       ports:
-    #         - 3306:3306
-    #       options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+    services:
+      mysql:
+          image: mysql:8.0.21
+          env:
+              MYSQL_ALLOW_EMPTY_PASSWORD: yes
+              MYSQL_ROOT_PASSWORD: ''
+              MYSQL_DATABASE: test
+          ports:
+            - 3306:3306
+          options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
 
     steps:
       - name: Checkout
@@ -43,18 +43,22 @@ jobs:
           sudo apt install -y python3-pymysql tree
           tree /home/runner/
 
+      - name: Create test database
+        run: |
+          **sudo systemctl start mysql** mysql -uroot -proot < databases/tracker/create_databases.sql
+
       - name: Removes mysql socket specification
         run: |
           sed -i '/login_unix_socket/d' Deploy-SEEK.yml
-      - name: Adds port to database.default.yml
-        run: |
-          sed -i '/password\: mysqlpassword/a \ \ port\: 3306' config/database.default.yml
-      - name: Adds host to database.default.yml
-        run: |
-          sed -i '/password\: mysqlpassword/a \ \ host\: 127.0.0.1' config/database.default.yml
-      - name: Checks changes
-        run: |
-          cat config/database.default.yml
+      # - name: Adds port to database.default.yml
+      #   run: |
+      #     sed -i '/password\: mysqlpassword/a \ \ port\: 3306' config/database.default.yml
+      # - name: Adds host to database.default.yml
+      #   run: |
+      #     sed -i '/password\: mysqlpassword/a \ \ host\: 127.0.0.1' config/database.default.yml
+      # - name: Checks changes
+      #   run: |
+      #     cat config/database.default.yml
 
       - name: Install SEEK through ansible
         run: ansible-playbook Deploy-SEEK.yml
