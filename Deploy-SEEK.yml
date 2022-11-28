@@ -284,9 +284,7 @@
       tags: database
 
     - name: echo
-      shell: bash -lc "{{ item }}"
-      with_items:
-        - echo "SELECT * FROM mysql.user" | mysql -u root
+      shell: echo "SELECT * FROM mysql.user" | mysql -u root
       register: oli
       tags: database
 
