@@ -291,6 +291,7 @@
       tags: database
 
     - debug: msg="{{ oli }}"
+      tags: database
 
     - name: Create database user
       become: true
