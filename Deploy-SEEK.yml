@@ -284,7 +284,9 @@
       tags: database
 
     - name: echo
-      shell: echo "SELECT * FROM mysql.user" | mysql -u root
+      become: true
+      become_user: root
+      shell:  mysql -u root -e "SELECT * FROM mysql.user"
       register: oli
       tags: database
 
