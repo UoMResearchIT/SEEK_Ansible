@@ -45,7 +45,7 @@ jobs:
         run: |
           sudo apt install -y mysql-server python3-pymysql 
           sudo apt install -y libmysqlclient-dev libsqlite3-dev sqlite3
-
+          sudo systemctl start mysql
 
       - name: Install SEEK through ansible
         run: ansible-playbook Deploy-SEEK.yml --tags "git,database"
