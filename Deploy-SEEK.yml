@@ -299,7 +299,7 @@
     - debug: msg="{{ oli }}"
       tags: database
 
-      - name: echo2
+    - name: echo2
       become: true
       become_user: root
       shell: bash -lc "{{ item }}"
