@@ -283,26 +283,26 @@
         replace: '{{sql_password}}'
       tags: database
 
-    - name:  Add host and port
-      ansible.builtin.blockinfile:
-        path: '{{git_dest}}/SEEK/config/database.default.yml'
-        insertafter: "  password: mysqlpassword"
-        block: |
-          "  port: 3306"
-          "  host: 127.0.0.1"
-      tags: database
+    # - name:  Add host and port
+    #   ansible.builtin.blockinfile:
+    #     path: '{{git_dest}}/SEEK/config/database.default.yml'
+    #     insertafter: "  password: mysqlpassword"
+    #     block: |
+    #       "  port: 3306"
+    #       "  host: 127.0.0.1"
+    #   tags: database
       
-    - name: Check config
-      shell: bash -lc "{{ item }}"
-      with_items:
-        - cat database.default.yml
-      args:
-        chdir: '{{git_dest}}/SEEK/config'
-      register: oli
-      tags: database
+    # - name: Check config
+    #   shell: bash -lc "{{ item }}"
+    #   with_items:
+    #     - cat database.default.yml
+    #   args:
+    #     chdir: '{{git_dest}}/SEEK/config'
+    #   register: oli
+    #   tags: database
 
-    - debug: msg="{{ oli.stdout }}"
-      tags: database
+    # - debug: msg="{{ oli.stdout }}"
+    #   tags: database
 
     - name: Create database user
       become: true
