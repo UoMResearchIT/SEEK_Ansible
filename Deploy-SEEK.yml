@@ -299,12 +299,10 @@
       tags: database
 
     - name: echo2
-      become: true
-      become_user: root
       shell: bash -lc "{{ item }}"
       with_items:
-        - mysql -e "select user();"
-        #- mysql -e "show variables where Variable_name='port';"
+        - sudo mysql -e "select user();"
+        - sudo mysql -e "show variables where Variable_name='port';"
       register: oli
       tags: database
 
