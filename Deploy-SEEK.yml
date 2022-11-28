@@ -285,7 +285,7 @@
 
     - name:  Add host and port
       ansible.builtin.blockinfile:
-        path: '{{git_dest}}/SEEK/config/database.default.yml'
+        path: '{{git_dest}}/SEEK/config/database.yml'
         insertafter: "  password: mysqlpassword"
         block: |2
             port: 3306
@@ -294,13 +294,13 @@
       
     - name:  Clear block markers
       ansible.builtin.lineinfile:
-        path: '{{git_dest}}/SEEK/config/database.default.yml'
+        path: '{{git_dest}}/SEEK/config/database.yml'
         search_string: 'ANSIBLE MANAGED BLOCK'
         state: absent
       tags: database
 
     - name: Check config
-      command: cat '{{git_dest}}/SEEK/config/database.default.yml'
+      command: cat '{{git_dest}}/SEEK/config/database.yml'
       register: oli
       tags: database
 
