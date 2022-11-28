@@ -301,8 +301,8 @@
     - name: echo2
       shell: bash -lc "{{ item }}"
       with_items:
-        - sudo mysql -e "select user();"
-        - sudo mysql -e "show variables where Variable_name='port';"
+        - sudo mysql -e 'select user();'
+        - sudo mysql -e 'show variables where Variable_name='port';'
       register: oli
       tags: database
 
