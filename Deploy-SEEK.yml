@@ -292,7 +292,6 @@
         - apt install net-tools -y
         - netstat -tlnp
         - cat /etc/passwd
-        - mysql -e "SELECT * FROM mysql.user"
       register: oli
       tags: database
 
