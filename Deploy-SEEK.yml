@@ -300,6 +300,7 @@
     - name: Print to console
       debug:
         msg: "{{oli.stdout}}"
+      tags: database
 
     - name: Create database user
       become: true
