@@ -290,14 +290,7 @@
         block: |
             port: 3306
             host: 127.0.0.1
-        marker: "xxxxxxxxx"
       tags: database
-
-    - name:  claen block
-      ansible.builtin.lineinfile:
-        path: '{{git_dest}}/SEEK/config/database.default.yml'
-        regexp: '/xxxxxxxxx/'
-        state: absent
       
     - name: Check config
       command: cat '{{git_dest}}/SEEK/config/database.default.yml'
