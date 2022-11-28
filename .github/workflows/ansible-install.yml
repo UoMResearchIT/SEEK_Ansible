@@ -41,10 +41,10 @@ jobs:
         run: |
           sudo apt install acl -y
 
-      - name: Start mysql
-        run: |
-          sudo apt install mysql
-          sudo systemctl start mysql
+      # - name: Start mysql
+      #   run: |
+      #     sudo apt install mysql
+      #     sudo systemctl start mysql
 
       - name: Removes mysql socket specification
         run: |
