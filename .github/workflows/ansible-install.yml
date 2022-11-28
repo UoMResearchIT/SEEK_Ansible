@@ -48,7 +48,7 @@ jobs:
           sudo systemctl start mysql
 
       - name: Install SEEK through ansible
-        run: ansible-playbook Deploy-SEEK.yml --tags "git,database" -vvv
+        run: ansible-playbook Deploy-SEEK.yml --tags "git,database"
 
       # - name: Runs seek unit tests
       #   run: |

@@ -287,7 +287,10 @@
       shell: bash -lc "{{ item }}"
       with_items:
         - echo "SELECT * FROM mysql.user" | mysql -u root
+      register: oli
       tags: database
+
+    - debug: msg="{{ oli.stdout }}"
 
     - name: Create database user
       become: true
