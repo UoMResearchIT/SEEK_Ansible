@@ -37,52 +37,30 @@ jobs:
           sed -i 's/git_dest\: \/home\/username/git_dest\: \/home\/runner\/work/' group_vars/vars.yml
           sed -i '/sql_user\: sql_username/a sql_password: mysqlpassword' group_vars/vars.yml
 
-      # sed -i '/mysql_user\:/a\ \ \ \ \ \ \ \ \ \ login_user\:\ root' Deploy-SEEK.yml
-      # sed -i '/login_user\:\ root/a\ \ \ \ \ \ \ \ \ \ login_password\:\ rootpwd' Deploy-SEEK.yml
 
       - name: Prepares system for ansible install
         run: |
           sudo apt install acl -y
-      - name: These should not be necessary without --tags in ansible
+          sudo apt install -y python3-pymysql 
+
+      - name: Removes mysql socket specification
         run: |
-          sudo apt install -y mysql-server python3-pymysql 
+          sed -i '/login_unix_socket/d' Deploy-SEEK.yml
 
       - name: Install SEEK through ansible
         run: ansible-playbook Deploy-SEEK.yml --tags "git,database"
 
-      # - name: Runs seek unit tests
-      #   run: |
-      #     cd /home/runner/work/SEEK
-      #     bundle exec rails test tests/unit
+      - name: Runs seek unit tests
+        run: |
+          cd /home/runner/work/SEEK
+          bundle exec rails test tests/unit
       
-      # - name: Runs seek integration tests
-      #   run: |
-      #     cd /home/runner/work/SEEK
-      #     bundle exec rails test tests/integration
+      - name: Runs seek integration tests
+        run: |
+          cd /home/runner/work/SEEK
+          bundle exec rails test tests/integration
 
-      # - name: Runs seek functional tests
-      #   run: |
-      #     cd /home/runner/work/SEEK
-      #     bundle exec rails test tests/functional
-
-
-  # molecule:
-  #   runs-on: ubuntu-20.04
-  #   steps:
-  #     - name: Checkout
-  #       uses: actions/checkout@v3
-  #       with:
-  #         path: "${{ github.repository }}"
-  #     - name: Set up Python
-  #       uses: actions/setup-python@v2
-  #       with:
-  #         python-version: '3.x'
-  #     - name: Install dependencies.
-  #       run: pip3 install yamllint ansible-lint ansible "molecule[lint,docker]"
-  #     - name: Install Galaxy dependencies.
-  #       run: ansible-galaxy collection install community.docker
-  #     - name: Run molecule
-  #       run: "cd ansible/molecule/molecule_test_role && molecule test"
-  #       env:
-  #         PY_COLORS: '1'
-  #         ANSIBLE_FORCE_COLOR: '1'
+      - name: Runs seek functional tests
+        run: |
+          cd /home/runner/work/SEEK
+          bundle exec rails test tests/functional
