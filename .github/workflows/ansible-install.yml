@@ -43,7 +43,8 @@ jobs:
 
       - name: Start mysql
         run: |
-          sudo systemctl start mysql.service
+          sudo apt install mysql
+          sudo systemctl start mysql
 
       - name: Removes mysql socket specification
         run: |
@@ -57,7 +58,7 @@ jobs:
       #     cat config/database.default.yml
 
       - name: Install SEEK through ansible
-        run: ansible-playbook Deploy-SEEK.yml
+        run: ansible-playbook Deploy-SEEK.yml --tags "git,database"
 
       - name: Runs seek unit tests
         run: |
