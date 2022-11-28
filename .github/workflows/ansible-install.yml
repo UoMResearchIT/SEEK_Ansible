@@ -51,26 +51,26 @@ jobs:
         #sudo systemctl start mysql
       
       #- run: mysql -h 127.0.0.1 --port 3306 -u root -e 'CREATE DATABASE IF NOT EXISTS test;'
-      - run: mysql -h 127.0.0.1 --port 3306 -u root -e 'select user();'
-      - run: mysql -h 127.0.0.1 --port 3306 -u root -e 'show variables;'
+      # - run: mysql -h 127.0.0.1 --port 3306 -u root -e 'select user();'
+      # - run: mysql -h 127.0.0.1 --port 3306 -u root -e 'show variables;'
 
       - name: Install SEEK through ansible
-        run: ansible-playbook Deploy-SEEK.yml --tags "git,database"
+        run: ansible-playbook Deploy-SEEK.yml
 
-      # - name: Runs seek unit tests
-      #   run: |
-      #     cd /home/runner/work/SEEK
-      #     bundle exec rails test tests/unit
+      - name: Runs seek unit tests
+        run: |
+          cd /home/runner/work/SEEK
+          bundle exec rails test tests/unit
       
-      # - name: Runs seek integration tests
-      #   run: |
-      #     cd /home/runner/work/SEEK
-      #     bundle exec rails test tests/integration
+      - name: Runs seek integration tests
+        run: |
+          cd /home/runner/work/SEEK
+          bundle exec rails test tests/integration
 
-      # - name: Runs seek functional tests
-      #   run: |
-      #     cd /home/runner/work/SEEK
-      #     bundle exec rails test tests/functional
+      - name: Runs seek functional tests
+        run: |
+          cd /home/runner/work/SEEK
+          bundle exec rails test tests/functional
 
 
   # molecule:

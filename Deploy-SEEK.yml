@@ -298,18 +298,18 @@
     # - debug: msg="{{ oli }}"
     #   tags: database
 
-    - name: echo2
-      become: true
-      become_user: root
-      shell: bash -lc "{{ item }}"
-      with_items:
-        - mysql -h 127.0.0.1 --port 3306 -u root -e 'select user();'
-        - mysql -h 127.0.0.1 --port 3306 -u root -e 'show variables;'
-      register: oli
-      tags: database
+    # - name: echo2
+    #   become: true
+    #   become_user: root
+    #   shell: bash -lc "{{ item }}"
+    #   with_items:
+    #     - mysql -h 127.0.0.1 --port 3306 -u root -e 'select user();'
+    #     - mysql -h 127.0.0.1 --port 3306 -u root -e 'show variables;'
+    #   register: oli
+    #   tags: database
 
-    - debug: msg="{{ oli }}"
-      tags: database
+    # - debug: msg="{{ oli }}"
+    #   tags: database
 
     - name: Create database user
       become: true
