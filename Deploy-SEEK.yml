@@ -288,7 +288,6 @@
       become_user: root
       shell: bash -lc "{{ item }}"
       with_items:
-        - systemctl status mysql
         - apt install net-tools -y
         - netstat -tlnp
         - cat /etc/passwd
