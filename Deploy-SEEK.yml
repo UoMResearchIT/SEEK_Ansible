@@ -303,8 +303,8 @@
       become_user: root
       shell: bash -lc "{{ item }}"
       with_items:
-        - mysql -h 127.0.0.1 -e 'select user();'
-        - mysql -h 127.0.0.1 -e 'show variables where Variable_name='port';'
+        - mysql -h 127.0.0.1 --port 3306 -u root -e 'select user();'
+        - mysql -h 127.0.0.1 --port 3306 -u root -e 'show variables where Variable_name='port';'
       register: oli
       tags: database
 
