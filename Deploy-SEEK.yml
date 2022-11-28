@@ -295,7 +295,24 @@
       register: oli
       tags: database
 
-    - debug: msg="{{ oli }}"
+       # - name: Check syntax of SDR tools
+    #   command: planemo lint --fail_level error --report_level warn '{​​​​​​​{​​​​​​​ item }​​​​​​​}​​​​​​​'
+    #   loop: "{​​​​​​​{​​​​​​​ glob_sdr_tools.files | map(attribute='path') | list }​​​​​​​}​​​​​​​"
+    #   loop_control:
+    #     label: "Checking {​​​​​​​{​​​​​​​ item }​​​​​​​}​​​​​​​"
+    #   register: sdrlint
+    # - name: Print Syntax check output
+    #   debug:
+    #     msg: '{​​​​​​​{​​​​​​​ item.stdout_lines }​​​​​​​}​​​​​​​'
+    #   loop: '{​​​​​​​{​​​​​​​ sdrlint.results }​​​​​​​}​​​​​​​'
+    #   loop_control:
+    #     label: ""
+
+    - debug: 
+        msg: '{​​​​​​​{​​​​​​​ item.stdout_lines }​​​​​​​}​​​​​​​'
+      loop: '{​​​​​​​{​​​​​​​ oli.results }​​​​​​​}​​​​​​​'
+      loop_control:
+        label: ""
       tags: database
 
     - name: Create database user
