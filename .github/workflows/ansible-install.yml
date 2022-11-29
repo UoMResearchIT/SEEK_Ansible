@@ -41,6 +41,21 @@ jobs:
         run: |
           sudo apt install acl -y
 
+      - name: Cache SEEK installation
+        id: cache-seek
+        uses: actions/cache@v3
+        env:
+          cache-name: cache-seek
+        with:
+          path: /
+          key: ${{ runner.os }}-build-${{ env.cache-name }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}
+
+      - if: ${{ steps.cache-seek.outputs.cache-hit != 'true' }}
+        name: Install SEEK through ansible
+        run: ansible-playbook Deploy-SEEK.yml --skip-tags database
+
       - name: Removes mysql socket specification
         run: |
           sed -i '/login_unix_socket/d' Deploy-SEEK.yml
@@ -52,8 +67,8 @@ jobs:
       #   run: |
       #     cat config/database.default.yml
 
-      - name: Install SEEK through ansible
-        run: ansible-playbook Deploy-SEEK.yml
+      - name: Setup SEEK database
+        run: ansible-playbook Deploy-SEEK.yml --tags database
 
       - name: Runs seek unit tests
         run: |
