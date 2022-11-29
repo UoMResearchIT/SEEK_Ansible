@@ -39,31 +39,33 @@ jobs:
 
       - name: Prepares system for ansible install
         run: |
-          sudo apt install acl tree -y
-          tree / -L 2 -d
+          sudo apt install acl -y
+      #   sudo apt install tree -y
+      #   tree / -L 2 -d
 
-      - name: Cache SEEK installation
-        id: cache-seek
-        uses: actions/cache@v3
-        env:
-          cache-name: cache-seek
-        with:
-          path: |
-            /etc
-            /home
-            /srv
-            /usr
-            /var
-            /opt
-            /bin
-            /sbin
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-subset
-          restore-keys: |
-            ${{ runner.os }}-build-${{ env.cache-name }}-subset
+      # - name: Cache SEEK installation
+      #   id: cache-seek
+      #   uses: actions/cache@v3
+      #   env:
+      #     cache-name: cache-seek
+      #   with:
+      #     path: |
+      #       /etc
+      #       /home
+      #       /srv
+      #       /usr
+      #       /var
+      #       /opt
+      #       /bin
+      #       /sbin
+      #     key: ${{ runner.os }}-build-${{ env.cache-name }}-subset
+      #     restore-keys: |
+      #       ${{ runner.os }}-build-${{ env.cache-name }}-subset
       #/root
 
-      - if: ${{ steps.cache-seek.outputs.cache-hit != 'true' }}
-        name: Install SEEK through ansible
+      # - if: ${{ steps.cache-seek.outputs.cache-hit != 'true' }}
+      #   name: Install SEEK through ansible
+      - name: Install SEEK through ansible
         run: ansible-playbook Deploy-SEEK.yml --skip-tags database
 
       - name: Removes mysql socket specification
@@ -79,6 +81,10 @@ jobs:
 
       - name: Setup SEEK database
         run: ansible-playbook Deploy-SEEK.yml --tags database
+        continue-on-error: true
+
+      - name: Setup tmate session
+      uses: mxschmitt/action-tmate@v3
 
       - name: Runs seek unit tests
         run: |
