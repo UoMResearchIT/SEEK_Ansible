@@ -50,8 +50,8 @@ jobs:
           cp /home/runner/work/SEEK/config/database.default.yml /home/runner/work/SEEK/config/database.yml
           sed -i '/password\: mysqlpassword/a \ \ port\: 3306' /home/runner/work/SEEK/config/database.yml
           sed -i '/password\: mysqlpassword/a \ \ host\: 127.0.0.1' /home/runner/work/SEEK/config/database.yml
-          sed -i '/mysqluser/root/g' /home/runner/work/SEEK/config/database.yml
-          sed -i '/mysqlpassword//g' /home/runner/work/SEEK/config/database.yml
+          sed -i 's/mysqluser/root/g' /home/runner/work/SEEK/config/database.yml
+          sed -i 's/mysqlpassword//g' /home/runner/work/SEEK/config/database.yml
           echo 'This is the database configuration in database.yml:'
           cat /home/runner/work/SEEK/config/database.yml
           cd /home/runner/work/SEEK && bash -lc 'bundle exec rake db:setup'
