@@ -40,7 +40,7 @@ jobs:
       - name: Prepares system for ansible install
         run: |
           sudo apt install acl tree -y
-          tree -L 2 -d
+          tree / -L 2 -d
 
       - name: Cache SEEK installation
         id: cache-seek
@@ -51,7 +51,6 @@ jobs:
           path: |
             /etc
             /home
-            /root
             /srv
             /usr
             /var
@@ -61,7 +60,37 @@ jobs:
           key: ${{ runner.os }}-build-${{ env.cache-name }}-subset
           restore-keys: |
             ${{ runner.os }}-build-${{ env.cache-name }}-subset
+      #/root
 
       - if: ${{ steps.cache-seek.outputs.cache-hit != 'true' }}
         name: Install SEEK through ansible
         run: ansible-playbook Deploy-SEEK.yml --skip-tags database
+
+      - name: Removes mysql socket specification
+        run: |
+          sed -i '/login_unix_socket/d' Deploy-SEEK.yml
+      # - name: Adds port and host to database.default.yml
+      #   run: |
+      #     sed -i '/password\: mysqlpassword/a \ \ port\: 3306' ${GITHUB_WORKSPACE}/config/database.default.yml
+      #     sed -i '/password\: mysqlpassword/a \ \ host\: 127.0.0.1' ${GITHUB_WORKSPACE}/config/database.default.yml
+      # - name: Checks changes
+      #   run: |
+      #     cat config/database.default.yml
+
+      - name: Setup SEEK database
+        run: ansible-playbook Deploy-SEEK.yml --tags database
+
+      - name: Runs seek unit tests
+        run: |
+          cd /home/runner/work/SEEK
+          bundle exec rails test tests/unit
+      
+      - name: Runs seek integration tests
+        run: |
+          cd /home/runner/work/SEEK
+          bundle exec rails test tests/integration
+
+      - name: Runs seek functional tests
+        run: |
+          cd /home/runner/work/SEEK
+          bundle exec rails test tests/functional
