@@ -39,7 +39,8 @@ jobs:
 
       - name: Prepares system for ansible install
         run: |
-          sudo apt install acl -y
+          sudo apt install acl tree -y
+          tree -L 2 -d
 
       - name: Cache SEEK installation
         id: cache-seek
@@ -47,12 +48,20 @@ jobs:
         env:
           cache-name: cache-seek
         with:
-          path: /
-          key: ${{ runner.os }}-build-${{ env.cache-name }}
+          path: |
+            /etc
+            /home
+            /root
+            /srv
+            /usr
+            /var
+            /opt
+            /bin
+            /sbin
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-subset
           restore-keys: |
-            ${{ runner.os }}-build-${{ env.cache-name }}
+            ${{ runner.os }}-build-${{ env.cache-name }}-subset
 
       - if: ${{ steps.cache-seek.outputs.cache-hit != 'true' }}
         name: Install SEEK through ansible
         run: ansible-playbook Deploy-SEEK.yml --skip-tags database
-
