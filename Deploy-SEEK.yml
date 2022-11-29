@@ -292,8 +292,6 @@
         priv: '*.*:ALL,GRANT'
         state: present
         login_unix_socket: /run/mysqld/mysqld.sock
-      vars:
-        ansible_python_interpreter: /usr/bin/python3
       tags: database
 
 

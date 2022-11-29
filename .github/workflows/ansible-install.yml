@@ -8,8 +8,7 @@ jobs:
     runs-on: ${{matrix.os}}
     strategy:
       matrix:
-        #os: [ubuntu-18.04,ubuntu-20.04,ubuntu-22.04,ubuntu-latest]
-        os: [ubuntu-20.04]
+        os: [ubuntu-18.04,ubuntu-20.04,ubuntu-22.04,ubuntu-latest]
 
     services:
       mysql:
@@ -52,16 +51,7 @@ jobs:
           sed -i '/password\: mysqlpassword/a \ \ host\: 127.0.0.1' config/database.yml
           sed -i 's/mysqluser/root/g' config/database.yml
           sed -i 's/mysqlpassword//g' config/database.yml
-          echo 'This is the database configuration in database.yml:'
-          cat config/database.yml
           bash -lc 'bundle exec rake db:setup'
-
-      # - name: Setup SEEK database
-      #   run: ansible-playbook Deploy-SEEK.yml --tags database
-      #   continue-on-error: true
-
-      # - name: Setup tmate session
-      #   uses: mxschmitt/action-tmate@v3
 
       - name: Runs seek unit tests
         working-directory: /home/runner/work/SEEK
@@ -69,9 +59,11 @@ jobs:
           bash -lc 'bundle exec rails test test/unit'
       
       - name: Runs seek integration tests
+        working-directory: /home/runner/work/SEEK
         run: |
-          cd /home/runner/work/SEEK && bash -lc 'bundle exec rails test test/integration'
+          bash -lc 'bundle exec rails test test/integration'
 
       - name: Runs seek functional tests
+        working-directory: /home/runner/work/SEEK
         run: |
-          cd /home/runner/work/SEEK && bash -lc 'bundle exec rails test test/functional'
+          bash -lc 'bundle exec rails test test/functional'
