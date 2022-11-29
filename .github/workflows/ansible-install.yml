@@ -83,8 +83,8 @@ jobs:
         run: ansible-playbook Deploy-SEEK.yml --tags database
         continue-on-error: true
 
-      - name: Setup tmate session
-        uses: mxschmitt/action-tmate@v3
+      # - name: Setup tmate session
+      #   uses: mxschmitt/action-tmate@v3
 
       - name: Runs seek unit tests
         run: |
