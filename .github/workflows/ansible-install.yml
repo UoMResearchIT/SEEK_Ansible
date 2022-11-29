@@ -84,7 +84,7 @@ jobs:
         continue-on-error: true
 
       - name: Setup tmate session
-      uses: mxschmitt/action-tmate@v3
+        uses: mxschmitt/action-tmate@v3
 
       - name: Runs seek unit tests
         run: |
