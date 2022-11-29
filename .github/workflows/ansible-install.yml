@@ -45,16 +45,16 @@ jobs:
         run: ansible-playbook Deploy-SEEK.yml --skip-tags database
 
       - name: Configures database
+        working-directory: /home/runner/work/SEEK
         run: |
-          sed -i '/login_unix_socket/d' Deploy-SEEK.yml
-          cp /home/runner/work/SEEK/config/database.default.yml /home/runner/work/SEEK/config/database.yml
-          sed -i '/password\: mysqlpassword/a \ \ port\: 3306' /home/runner/work/SEEK/config/database.yml
-          sed -i '/password\: mysqlpassword/a \ \ host\: 127.0.0.1' /home/runner/work/SEEK/config/database.yml
-          sed -i 's/mysqluser/root/g' /home/runner/work/SEEK/config/database.yml
-          sed -i 's/mysqlpassword//g' /home/runner/work/SEEK/config/database.yml
+          cp config/database.default.yml config/database.yml
+          sed -i '/password\: mysqlpassword/a \ \ port\: 3306' config/database.yml
+          sed -i '/password\: mysqlpassword/a \ \ host\: 127.0.0.1' config/database.yml
+          sed -i 's/mysqluser/root/g' config/database.yml
+          sed -i 's/mysqlpassword//g' config/database.yml
           echo 'This is the database configuration in database.yml:'
-          cat /home/runner/work/SEEK/config/database.yml
-          cd /home/runner/work/SEEK && bash -lc 'bundle exec rake db:setup'
+          cat config/database.yml
+          bash -lc 'bundle exec rake db:setup'
 
       # - name: Setup SEEK database
       #   run: ansible-playbook Deploy-SEEK.yml --tags database
@@ -64,13 +64,14 @@ jobs:
       #   uses: mxschmitt/action-tmate@v3
 
       - name: Runs seek unit tests
+        working-directory: /home/runner/work/SEEK
         run: |
-          cd /home/runner/work/SEEK && bash -lc 'bundle exec rails test tests/unit'
+          bash -lc 'bundle exec rails test test/unit'
       
       - name: Runs seek integration tests
         run: |
-          cd /home/runner/work/SEEK && bash -lc 'bundle exec rails test tests/integration'
+          cd /home/runner/work/SEEK && bash -lc 'bundle exec rails test test/integration'
 
       - name: Runs seek functional tests
         run: |
-          cd /home/runner/work/SEEK && bash -lc 'bundle exec rails test tests/functional'
+          cd /home/runner/work/SEEK && bash -lc 'bundle exec rails test test/functional'
