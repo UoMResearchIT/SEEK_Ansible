@@ -23,9 +23,13 @@ jobs:
           options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
 
     steps:
+      - name: MySql
+        run: |
+          sudo mysql --host 127.0.0.1 --port 3306 -e "SELECT SUBSTRING_INDEX(USER(), '@', -1) AS ip,  @@hostname as hostname, @@port as port, DATABASE() as current_database;"
+        continue-on-error: true
+
       - name: Checkout
         uses: actions/checkout@v3
-
 
       - name: Configure ansible for local install
         run: |
@@ -48,6 +52,7 @@ jobs:
       - name: MySql
         run: |
           sudo mysql --host 127.0.0.1 --port 3306 -e "SELECT SUBSTRING_INDEX(USER(), '@', -1) AS ip,  @@hostname as hostname, @@port as port, DATABASE() as current_database;"
+        continue-on-error: true
 
       - name: Configures database
         working-directory: /home/runner/work/SEEK
