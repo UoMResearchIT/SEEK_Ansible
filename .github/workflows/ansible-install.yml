@@ -26,45 +26,49 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Configure ansible for local install
+      - name: MySql
         run: |
-          sed -i '/vault_password_file/d' ansible.cfg
-          sed -i '/ssh_connection/d' ansible.cfg
-          sed -i '/pipelining/d' ansible.cfg
-          sed -i 's/\- hosts\: \[servers\]/\- hosts\: localhost/g' Deploy-SEEK.yml
-          sed -i '/\- hosts\: localhost/a \ \ connection\: local' Deploy-SEEK.yml
-          sed -i 's/user_var\: username/user_var\: runner/' group_vars/vars.yml
-          sed -i 's/git_dest\: \/home\/username/git_dest\: \/home\/runner\/work/' group_vars/vars.yml
-          sed -i '/sql_user\: sql_username/a sql_password: mysqlpassword' group_vars/vars.yml
+          sudo mysql -e "SELECT SUBSTRING_INDEX(USER(), '@', -1) AS ip,  @@hostname as hostname, @@port as port, DATABASE() as current_database;"
 
-      - name: Prepares system for ansible install
-        run: |
-          sudo apt install acl -y
+      # - name: Configure ansible for local install
+      #   run: |
+      #     sed -i '/vault_password_file/d' ansible.cfg
+      #     sed -i '/ssh_connection/d' ansible.cfg
+      #     sed -i '/pipelining/d' ansible.cfg
+      #     sed -i 's/\- hosts\: \[servers\]/\- hosts\: localhost/g' Deploy-SEEK.yml
+      #     sed -i '/\- hosts\: localhost/a \ \ connection\: local' Deploy-SEEK.yml
+      #     sed -i 's/user_var\: username/user_var\: runner/' group_vars/vars.yml
+      #     sed -i 's/git_dest\: \/home\/username/git_dest\: \/home\/runner\/work/' group_vars/vars.yml
+      #     sed -i '/sql_user\: sql_username/a sql_password: mysqlpassword' group_vars/vars.yml
 
-      - name: Install SEEK through ansible
-        run: ansible-playbook Deploy-SEEK.yml --skip-tags database
+      # - name: Prepares system for ansible install
+      #   run: |
+      #     sudo apt install acl -y
 
-      - name: Configures database
-        working-directory: /home/runner/work/SEEK
-        run: |
-          cp config/database.default.yml config/database.yml
-          sed -i '/password\: mysqlpassword/a \ \ port\: 3306' config/database.yml
-          sed -i '/password\: mysqlpassword/a \ \ host\: 127.0.0.1' config/database.yml
-          sed -i 's/mysqluser/root/g' config/database.yml
-          sed -i 's/mysqlpassword//g' config/database.yml
-          bash -lc 'bundle exec rake db:setup'
+      # - name: Install SEEK through ansible
+      #   run: ansible-playbook Deploy-SEEK.yml --skip-tags database
 
-      - name: Runs seek unit tests
-        working-directory: /home/runner/work/SEEK
-        run: |
-          bash -lc 'bundle exec rails test test/unit'
+      # - name: Configures database
+      #   working-directory: /home/runner/work/SEEK
+      #   run: |
+      #     cp config/database.default.yml config/database.yml
+      #     sed -i '/password\: mysqlpassword/a \ \ port\: 3306' config/database.yml
+      #     sed -i '/password\: mysqlpassword/a \ \ host\: 127.0.0.1' config/database.yml
+      #     sed -i 's/mysqluser/root/g' config/database.yml
+      #     sed -i 's/mysqlpassword//g' config/database.yml
+      #     bash -lc 'bundle exec rake db:setup'
 
-      - name: Runs seek integration tests
-        working-directory: /home/runner/work/SEEK
-        run: |
-          bash -lc 'bundle exec rails test test/integration'
+      # - name: Runs seek unit tests
+      #   working-directory: /home/runner/work/SEEK
+      #   run: |
+      #     bash -lc 'bundle exec rails test test/unit'
 
-      - name: Runs seek functional tests
-        working-directory: /home/runner/work/SEEK
-        run: |
-          bash -lc 'bundle exec rails test test/functional'
+      # - name: Runs seek integration tests
+      #   working-directory: /home/runner/work/SEEK
+      #   run: |
+      #     bash -lc 'bundle exec rails test test/integration'
+
+      # - name: Runs seek functional tests
+      #   working-directory: /home/runner/work/SEEK
+      #   run: |
+      #     bash -lc 'bundle exec rails test test/functional'
