@@ -28,7 +28,7 @@ jobs:
 
       - name: MySql
         run: |
-          sudo mysql -e "SELECT SUBSTRING_INDEX(USER(), '@', -1) AS ip,  @@hostname as hostname, @@port as port, DATABASE() as current_database;"
+          sudo mysql --host 127.0.0.1 --port 3306 -e "SELECT SUBSTRING_INDEX(USER(), '@', -1) AS ip,  @@hostname as hostname, @@port as port, DATABASE() as current_database;"
 
       # - name: Configure ansible for local install
       #   run: |
