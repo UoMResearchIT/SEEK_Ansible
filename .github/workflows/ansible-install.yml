@@ -30,7 +30,8 @@ jobs:
 
       - name: Docker prodding
         run: |
-          docker ps
+          sudo docker ps
+          docker inspect $(docker ps -aq) | grep -i IPAddress
         continue-on-error: true
 
       - name: Checkout
@@ -66,7 +67,8 @@ jobs:
 
       - name: Docker prodding
         run: |
-          docker ps
+          sudo docker ps
+          docker inspect $(docker ps -aq) | grep -i IPAddress
         continue-on-error: true
 
       - name: MySql
