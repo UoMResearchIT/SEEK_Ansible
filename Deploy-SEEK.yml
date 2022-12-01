@@ -260,15 +260,6 @@
         - seek
         - python
 
-    - name: Install filelock (Ubuntu < 20.04)
-      shell: bash -lc "{{ item }}"
-      with_items:
-        - python3.7 -m pip install filelock
-      args:
-        chdir: '{{git_dest}}/SEEK'
-      when: ansible_distribution_version is version('20.04', '<')
-      tags: python
-
 
     ########## Configure database
 
