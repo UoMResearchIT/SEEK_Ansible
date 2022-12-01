@@ -31,7 +31,6 @@ jobs:
       - name: Docker prodding
         run: |
           docker ps
-          sudo docker ps
         continue-on-error: true
 
       - name: Checkout
@@ -52,8 +51,8 @@ jobs:
         run: |
           sudo apt install acl -y
 
-      # - name: Install SEEK through ansible
-      #   run: ansible-playbook Deploy-SEEK.yml --skip-tags database
+      - name: Install SEEK through ansible
+        run: ansible-playbook Deploy-SEEK.yml --skip-tags database
 
       - name: MySql
         run: |
@@ -65,9 +64,14 @@ jobs:
           sudo mysql --host 172.18.0.1 --port 3306 -e "SELECT SUBSTRING_INDEX(USER(), '@', -1) AS ip,  @@hostname as hostname, @@port as port, DATABASE() as current_database;"
         continue-on-error: true
 
+      - name: Docker prodding
+        run: |
+          docker ps
+        continue-on-error: true
+
       - name: MySql
         run: |
-          sudo mysql --host db881ab9876a --port 3306 -e "SELECT SUBSTRING_INDEX(USER(), '@', -1) AS ip,  @@hostname as hostname, @@port as port, DATABASE() as current_database;"
+          sudo mysql --host 0.0.0.0 --port 3306 -e "SELECT SUBSTRING_INDEX(USER(), '@', -1) AS ip,  @@hostname as hostname, @@port as port, DATABASE() as current_database;"
         continue-on-error: true
 
       - name: Configures database
