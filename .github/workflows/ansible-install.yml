@@ -46,8 +46,8 @@ jobs:
         run: |
           sudo apt install acl -y
 
-      # - name: Install SEEK through ansible
-      #   run: ansible-playbook Deploy-SEEK.yml --skip-tags database
+      - name: Install SEEK through ansible
+        run: ansible-playbook Deploy-SEEK.yml --skip-tags database
 
       - name: MySql
         run: |
