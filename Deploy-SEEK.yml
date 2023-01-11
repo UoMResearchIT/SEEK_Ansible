@@ -32,6 +32,20 @@
         state: latest
       tags: packages
 
+    - name: Ping MySQL
+      become: true
+      become_user: root
+      shell: >
+        sudo mysql --host 127.0.0.1 --port 3306 -e "SELECT SUBSTRING_INDEX(USER(), '@', -1) AS ip,  @@hostname as hostname, @@port as port, DATABASE() as current_database;"
+      register: ping
+      tags: debug
+    - name: Check ping
+      ansible.builtin.debug:
+        msg:
+          - "{{ ping.stdout }}"
+          - "{{ ping.stderr }}"
+      tags: debug
+
     - name: Install a list of packages
       become: true
       become_user: root
@@ -70,6 +84,20 @@
         - libyaml-dev
         - sqlite3
       tags: packages
+
+    - name: Ping MySQL
+      become: true
+      become_user: root
+      shell: >
+        sudo mysql --host 127.0.0.1 --port 3306 -e "SELECT SUBSTRING_INDEX(USER(), '@', -1) AS ip,  @@hostname as hostname, @@port as port, DATABASE() as current_database;"
+      register: ping
+      tags: debug
+    - name: Check ping
+      ansible.builtin.debug:
+        msg:
+          - "{{ ping.stdout }}"
+          - "{{ ping.stderr }}"
+      tags: debug
 
     - name: Correct java version selected
       become: true
