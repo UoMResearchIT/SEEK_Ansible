@@ -30,7 +30,14 @@
         update_cache: yes
         name: "*"
         state: latest
+      register: upack
       tags: packages
+    - name: Check updated packages
+      ansible.builtin.debug:
+        msg:
+          - "{{ upack.stdout }}"
+          - "{{ upack.stderr }}"
+      tags: debug
 
     - name: Ping MySQL
       become: true
