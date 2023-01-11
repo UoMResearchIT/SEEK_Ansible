@@ -93,6 +93,12 @@
 
 
     ########## Clone SEEK
+    - name: SEEK branch to be pulled
+      ansible.builtin.debug:
+        var: git_version
+      tags:
+        - seek
+        - git
 
     - name: Clone SEEK git repo
       ansible.builtin.git:
