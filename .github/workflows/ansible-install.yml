@@ -24,6 +24,28 @@ jobs:
           options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
 
     steps:
+      - name: Reaching MySql on 127.0.0.1 before checkout?
+        run: |
+          sudo mysql --host 127.0.0.1 --port 3306 -e "SELECT SUBSTRING_INDEX(USER(), '@', -1) AS ip,  @@hostname as hostname, @@port as port, DATABASE() as current_database;"
+        continue-on-error: true
+
+      - name: Reaching MySql on 0.0.0.0 before checkout?
+        run: |
+          sudo mysql --host 0.0.0.0 --port 3306 -e "SELECT SUBSTRING_INDEX(USER(), '@', -1) AS ip,  @@hostname as hostname, @@port as port, DATABASE() as current_database;"
+        continue-on-error: true
+
+      - name: Reaching MySql on 172.18.0.1 before checkout?
+        run: |
+          sudo mysql --host 172.18.0.1 --port 3306 -e "SELECT SUBSTRING_INDEX(USER(), '@', -1) AS ip,  @@hostname as hostname, @@port as port, DATABASE() as current_database;"
+        continue-on-error: true
+
+      - name: Docker prodding before checkout?
+        run: |
+          sudo docker ps
+          docker inspect $(docker ps -aq) | grep -i IPAddress
+        continue-on-error: true
+
+
       - name: Checkout
         uses: actions/checkout@v3
 
@@ -36,15 +58,60 @@ jobs:
           sed -i '/\- hosts\: localhost/a \ \ connection\: local' Deploy-SEEK.yml
           sed -i 's/user_var\: username/user_var\: runner/' group_vars/vars.yml
           sed -i 's/git_dest\: \/home\/username/git_dest\: \/home\/runner\/work/' group_vars/vars.yml
-          sed -i 's|git_version: master|git_version: '"${GITHUB_REF##*/}"'|' group_vars/vars.yml
           sed -i '/sql_user\: sql_username/a sql_password: mysqlpassword' group_vars/vars.yml
 
       - name: Prepares system for ansible install
         run: |
           sudo apt install acl -y
 
+
+      - name: Reaching MySql on 127.0.0.1 before seek install?
+        run: |
+          sudo mysql --host 127.0.0.1 --port 3306 -e "SELECT SUBSTRING_INDEX(USER(), '@', -1) AS ip,  @@hostname as hostname, @@port as port, DATABASE() as current_database;"
+        continue-on-error: true
+
+      - name: Reaching MySql on 0.0.0.0 before seek install?
+        run: |
+          sudo mysql --host 0.0.0.0 --port 3306 -e "SELECT SUBSTRING_INDEX(USER(), '@', -1) AS ip,  @@hostname as hostname, @@port as port, DATABASE() as current_database;"
+        continue-on-error: true
+
+      - name: Reaching MySql on 172.18.0.1 before seek install?
+        run: |
+          sudo mysql --host 172.18.0.1 --port 3306 -e "SELECT SUBSTRING_INDEX(USER(), '@', -1) AS ip,  @@hostname as hostname, @@port as port, DATABASE() as current_database;"
+        continue-on-error: true
+
+      - name: Docker prodding before seek install
+        run: |
+          sudo docker ps
+          docker inspect $(docker ps -aq) | grep -i IPAddress
+        continue-on-error: true
+
+
       - name: Install SEEK through ansible
         run: ansible-playbook Deploy-SEEK.yml --skip-tags database
+
+
+      - name: Reaching MySql on 127.0.0.1 post seek install?
+        run: |
+          sudo mysql --host 127.0.0.1 --port 3306 -e "SELECT SUBSTRING_INDEX(USER(), '@', -1) AS ip,  @@hostname as hostname, @@port as port, DATABASE() as current_database;"
+        continue-on-error: true
+
+      - name: Reaching MySql on 0.0.0.0 post seek install?
+        run: |
+          sudo mysql --host 0.0.0.0 --port 3306 -e "SELECT SUBSTRING_INDEX(USER(), '@', -1) AS ip,  @@hostname as hostname, @@port as port, DATABASE() as current_database;"
+        continue-on-error: true
+
+      - name: Reaching MySql on 172.18.0.1 post seek install?
+        run: |
+          sudo mysql --host 172.18.0.1 --port 3306 -e "SELECT SUBSTRING_INDEX(USER(), '@', -1) AS ip,  @@hostname as hostname, @@port as port, DATABASE() as current_database;"
+        continue-on-error: true
+
+      - name: Docker prodding post seek install
+        run: |
+          sudo docker ps
+          docker inspect $(docker ps -aq) | grep -i IPAddress
+        continue-on-error: true
+
 
       - name: Configures database
         working-directory: /home/runner/work/SEEK
