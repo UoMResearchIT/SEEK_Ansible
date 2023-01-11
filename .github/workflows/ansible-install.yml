@@ -88,7 +88,7 @@ jobs:
 
 
       - name: Install SEEK through ansible
-        run: ansible-playbook Deploy-SEEK.yml --tags debug
+        run: ansible-playbook Deploy-SEEK.yml --skip-tags database
 
 
       - name: Reaching MySql on 127.0.0.1 post seek install?

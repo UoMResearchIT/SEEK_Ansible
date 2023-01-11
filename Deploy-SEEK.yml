@@ -18,7 +18,7 @@
       tags: debug
     - name: Check ping
       ansible.builtin.debug:
-        msg: 
+        msg:
           - "{{ ping.stdout }}"
           - "{{ ping.stderr }}"
       tags: debug
@@ -79,6 +79,19 @@
         path: /usr/lib/jvm/java-11-openjdk-amd64/bin/java
       tags: packages
 
+    - name: Ping MySQL
+      become: true
+      become_user: root
+      shell: >
+        sudo mysql --host 127.0.0.1 --port 3306 -e "SELECT SUBSTRING_INDEX(USER(), '@', -1) AS ip,  @@hostname as hostname, @@port as port, DATABASE() as current_database;"
+      register: ping
+      tags: debug
+    - name: Check ping
+      ansible.builtin.debug:
+        msg:
+          - "{{ ping.stdout }}"
+          - "{{ ping.stderr }}"
+      tags: debug
 
     ########## Install rvm
 
@@ -105,6 +118,19 @@
         usermod -a -G rvm '{{user_var}}'
       tags: rvm
 
+    - name: Ping MySQL
+      become: true
+      become_user: root
+      shell: >
+        sudo mysql --host 127.0.0.1 --port 3306 -e "SELECT SUBSTRING_INDEX(USER(), '@', -1) AS ip,  @@hostname as hostname, @@port as port, DATABASE() as current_database;"
+      register: ping
+      tags: debug
+    - name: Check ping
+      ansible.builtin.debug:
+        msg:
+          - "{{ ping.stdout }}"
+          - "{{ ping.stderr }}"
+      tags: debug
 
     ########## Clone SEEK
     - name: SEEK branch to be pulled
@@ -130,6 +156,19 @@
       run_once: true
       tags: git
 
+    - name: Ping MySQL
+      become: true
+      become_user: root
+      shell: >
+        sudo mysql --host 127.0.0.1 --port 3306 -e "SELECT SUBSTRING_INDEX(USER(), '@', -1) AS ip,  @@hostname as hostname, @@port as port, DATABASE() as current_database;"
+      register: ping
+      tags: debug
+    - name: Check ping
+      ansible.builtin.debug:
+        msg:
+          - "{{ ping.stdout }}"
+          - "{{ ping.stderr }}"
+      tags: debug
 
     ########## Install ruby
 
@@ -181,9 +220,37 @@
         - openssl
         - ruby
 
+    - name: Ping MySQL
+      become: true
+      become_user: root
+      shell: >
+        sudo mysql --host 127.0.0.1 --port 3306 -e "SELECT SUBSTRING_INDEX(USER(), '@', -1) AS ip,  @@hostname as hostname, @@port as port, DATABASE() as current_database;"
+      register: ping
+      tags: debug
+    - name: Check ping
+      ansible.builtin.debug:
+        msg:
+          - "{{ ping.stdout }}"
+          - "{{ ping.stderr }}"
+      tags: debug
+
     - name: Reset connection  #To allow user changes to affect 'current login user'
       meta: reset_connection
       tags: ruby
+
+    - name: Ping MySQL
+      become: true
+      become_user: root
+      shell: >
+        sudo mysql --host 127.0.0.1 --port 3306 -e "SELECT SUBSTRING_INDEX(USER(), '@', -1) AS ip,  @@hostname as hostname, @@port as port, DATABASE() as current_database;"
+      register: ping
+      tags: debug
+    - name: Check ping
+      ansible.builtin.debug:
+        msg:
+          - "{{ ping.stdout }}"
+          - "{{ ping.stderr }}"
+      tags: debug
 
     - name:  Install Ruby (Ubuntu >= 22.04)
       shell: bash -lc "{{ item }}"    #The bash -lc "{{ item }}" wrapper around the shell commands (items) makes sure rvm environment variables are available.
@@ -206,6 +273,20 @@
         - rvm --default use $(cat '{{git_dest}}/SEEK/.ruby-version')
       tags: ruby
 
+    - name: Ping MySQL
+      become: true
+      become_user: root
+      shell: >
+        sudo mysql --host 127.0.0.1 --port 3306 -e "SELECT SUBSTRING_INDEX(USER(), '@', -1) AS ip,  @@hostname as hostname, @@port as port, DATABASE() as current_database;"
+      register: ping
+      tags: debug
+    - name: Check ping
+      ansible.builtin.debug:
+        msg:
+          - "{{ ping.stdout }}"
+          - "{{ ping.stderr }}"
+      tags: debug
+
     - name: Generate docs
       shell: bash -lc "{{ item }}"
       with_items:
@@ -218,6 +299,20 @@
       with_items:
         - gem install bundler
       tags: ruby
+
+    - name: Ping MySQL
+      become: true
+      become_user: root
+      shell: >
+        sudo mysql --host 127.0.0.1 --port 3306 -e "SELECT SUBSTRING_INDEX(USER(), '@', -1) AS ip,  @@hostname as hostname, @@port as port, DATABASE() as current_database;"
+      register: ping
+      tags: debug
+    - name: Check ping
+      ansible.builtin.debug:
+        msg:
+          - "{{ ping.stdout }}"
+          - "{{ ping.stderr }}"
+      tags: debug
 
 
     ########## Install SEEK Gems
@@ -232,6 +327,19 @@
         - seek
         - ruby
 
+    - name: Ping MySQL
+      become: true
+      become_user: root
+      shell: >
+        sudo mysql --host 127.0.0.1 --port 3306 -e "SELECT SUBSTRING_INDEX(USER(), '@', -1) AS ip,  @@hostname as hostname, @@port as port, DATABASE() as current_database;"
+      register: ping
+      tags: debug
+    - name: Check ping
+      ansible.builtin.debug:
+        msg:
+          - "{{ ping.stdout }}"
+          - "{{ ping.stderr }}"
+      tags: debug
 
     ########## Install python tools
 
@@ -242,9 +350,37 @@
         repo: ppa:deadsnakes/ppa
       tags: python
 
+    - name: Ping MySQL
+      become: true
+      become_user: root
+      shell: >
+        sudo mysql --host 127.0.0.1 --port 3306 -e "SELECT SUBSTRING_INDEX(USER(), '@', -1) AS ip,  @@hostname as hostname, @@port as port, DATABASE() as current_database;"
+      register: ping
+      tags: debug
+    - name: Check ping
+      ansible.builtin.debug:
+        msg:
+          - "{{ ping.stdout }}"
+          - "{{ ping.stderr }}"
+      tags: debug
+
     - name: Reset connection 2  #To allow user changes to affect 'current login user'
       meta: reset_connection
       tags: python
+
+    - name: Ping MySQL
+      become: true
+      become_user: root
+      shell: >
+        sudo mysql --host 127.0.0.1 --port 3306 -e "SELECT SUBSTRING_INDEX(USER(), '@', -1) AS ip,  @@hostname as hostname, @@port as port, DATABASE() as current_database;"
+      register: ping
+      tags: debug
+    - name: Check ping
+      ansible.builtin.debug:
+        msg:
+          - "{{ ping.stdout }}"
+          - "{{ ping.stderr }}"
+      tags: debug
 
     - name: Install python tools
       become: true
@@ -279,6 +415,20 @@
       tags:
         - seek
         - python
+
+    - name: Ping MySQL
+      become: true
+      become_user: root
+      shell: >
+        sudo mysql --host 127.0.0.1 --port 3306 -e "SELECT SUBSTRING_INDEX(USER(), '@', -1) AS ip,  @@hostname as hostname, @@port as port, DATABASE() as current_database;"
+      register: ping
+      tags: debug
+    - name: Check ping
+      ansible.builtin.debug:
+        msg:
+          - "{{ ping.stdout }}"
+          - "{{ ping.stderr }}"
+      tags: debug
 
 
     ########## Configure database
