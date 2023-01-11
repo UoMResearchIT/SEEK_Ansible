@@ -1,4 +1,5 @@
 user_var: username
 git_dest: /home/username
+git_version: master
 sql_user: sql_username
 
