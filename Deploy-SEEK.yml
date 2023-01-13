@@ -21,7 +21,7 @@
 
     - name: SEEK branch to be pulled
       ansible.builtin.debug:
-        msg: 'hello-world - 22 - '
+        msg: 'hello-world - 22 - {{fail}}'
       when: ansible_distribution_version is version('22.04', '=')
       tags: debug
 
