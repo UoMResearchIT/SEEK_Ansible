@@ -6,7 +6,7 @@ on:
 jobs:
   install-seek-from-ansible:
     runs-on: ${{matrix.os}}
-    #continue-on-error: true
+    continue-on-error: true
     strategy:
       matrix:
         os: [ubuntu-18.04,ubuntu-20.04,ubuntu-22.04]
@@ -43,7 +43,7 @@ jobs:
           sudo apt install acl -y
 
       - name: Install SEEK through ansible
-        run: ansible-playbook Deploy-SEEK.yml --skip-tags database
+        run: ansible-playbook Deploy-SEEK.yml --tags debug
 
       - name: Configures database
         working-directory: /home/runner/work/SEEK
@@ -69,3 +69,16 @@ jobs:
         working-directory: /home/runner/work/SEEK
         run: |
           bash -lc 'bundle exec rails test test/functional'
+
+  fail-on-any-os:
+    # Without this step workflow remains "green" regardles of fails above.
+    name: Workflow Status
+    needs:
+      - install-seek-from-ansible
+    runs-on: ubuntu-latest
+    if: always()
+    steps:
+      - uses: technote-space/workflow-conclusion-action@v2
+      - name: Check Job Status status and fail if they are red
+        if: env.WORKFLOW_CONCLUSION == 'failure'
+        run: exit 1
